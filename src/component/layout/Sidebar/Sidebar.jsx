@@ -1,14 +1,14 @@
 import React from 'react'
 import './Sidebar.css'
+import { NavLink } from 'react-router-dom'
 
 const Sidebar = () => {
   return (
     <div className="sidebar">
       <ul>
-        <li><a className="active" href="#dashboard">Dashboard</a></li>
-        <li><a href="#product">Products</a></li>
-        <li><a href="#order">Orders</a></li>
-        <li><a href="#comment">Comments</a></li>
+        <li><NavLink to="/dashboard">Dashboard</NavLink></li>
+        <li><NavLink to="/product">Products</NavLink></li>
+        <li><NavLink to="/order">Orders</NavLink></li>
       </ul>
     </div>
   )

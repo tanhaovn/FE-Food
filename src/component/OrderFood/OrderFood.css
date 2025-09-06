@@ -94,7 +94,6 @@ body {
   font-weight: 500;
 }
 
-/* Toggle Switch */
 .switch {
   position: relative;
   display: inline-block;
@@ -139,7 +138,7 @@ input:checked + .slider {
 input:checked + .slider:before {
   transform: translateX(20px);
 }
-/* Overlay */
+
 .modal-overlay {
   position: fixed;
   top: 0; left: 0;
@@ -151,7 +150,6 @@ input:checked + .slider:before {
   z-index: 999;
 }
 
-/* Modal Box */
 .modal {
   background: #fff;
   padding: 25px;
@@ -169,7 +167,6 @@ input:checked + .slider:before {
   text-align: center;
 }
 
-/* Form */
 .modal form div {
   margin-bottom: 15px;
   display: flex;

@@ -1,0 +1,45 @@
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #fdfdfd; 
+  text-align: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.error-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #a86b00; 
+  margin-bottom: 10px;
+}
+
+.error-message {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.error-btn {
+  padding: 12px 25px;
+  background: #a86b00;
+  color: #fff;
+  border-radius: 25px;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+}
+
+.error-btn:hover {
+  background: #c27c00;
+  transform: scale(1.05);
+}
+.icon-left {
+  margin-right: 8px;
+  font-size: 1.1rem;
+  vertical-align: middle;
+}

@@ -1,38 +1,50 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-import './index.css'
-import App from './App.jsx'
-import OrderUser from './component/OrderUser/OrderUser.jsx'
-import Login from './pages/login/login.jsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "./index.css";
+import App from "./App.jsx";
+import OrderUser from "./component/OrderUser/OrderUser.jsx";
+import Dashboard from "./component/Dashboard/Dashboard.jsx";
+import Login from "./pages/login/login.jsx";
+import NewApp from "./component/NewApp/NewApp.jsx";
+import ErrorPage from "./pages/ErrorPage/ErrorPage.jsx"
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App/>,
-  },
-    {
+    element: <App />,
+    errorElement: <ErrorPage />, 
+    children: [
+      {
+        index:true,
+        element:<NewApp /> 
+      },
+      {
+        path: "/product",
+        element: <NewApp />,
+      },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "/order",
+        element: <OrderUser />,
+      },
+      {
+        path: "/setting",
+        element: <div>Setting</div>,
+      },
+    ],
+  },  
+  {
     path: "/login",
-    element: <Login/>,
-  },
-    {
-    path: "/dashboard",
-    element: <div>dashboard</div>,
-  },
-  {
-    path: "/order",
-    element: <OrderUser/>,
-  },
-  {
-    path: "/setting",
-    element: <div>Setting</div>,
+    element: <Login />,
+    errorElement: <ErrorPage />, 
   },
 ]);
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>,
-)
+  </StrictMode>
+);
