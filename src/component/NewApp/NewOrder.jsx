@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import "../OrderFood/OrderFood.css";
-import Product from "../Product/Product";
-import OrderFood from "../OrderFood/OrderFood";
+import "../OrderUser/OrderUser.css";
+import ProductUser from "../Product/ProductUser";
+import OrderUser from "../OrderUser/OrderUser";
 import Anh1 from "../../assets/anh1.jpg";
 import Anh2 from "../../assets/anh2.jpg";
 import Anh3 from "../../assets/anh3.jpg";
@@ -10,7 +10,7 @@ import Anh5 from "../../assets/anh5.jpg";
 import Anh6 from "../../assets/anh6.jpg";
 import Anh7 from "../../assets/anh7.jpg";
 
-const NewApp = () => {
+const NewOrder = () => {
   const [products, setProducts] = useState([
     {
       id: 1,
@@ -90,8 +90,8 @@ const NewApp = () => {
 
   return (
     <div className="container">
-      <Product />
-      <OrderFood
+      <ProductUser />
+      <OrderUser
         products={products}
         onDelete={deleteProduct}
         onUpdate={updateProduct}
@@ -100,4 +100,4 @@ const NewApp = () => {
   );
 };
 
-export default NewApp;
+export default NewOrder;

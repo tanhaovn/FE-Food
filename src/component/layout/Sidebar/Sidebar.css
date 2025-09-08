@@ -1,9 +1,7 @@
 .sidebar {
   width: 100%;
   height: 60px;
-  background: rgba(255, 140, 0, 0.3); /* cam trong suốt 30% */
-  backdrop-filter: blur(8px);          /* làm mờ nền phía sau */
-  -webkit-backdrop-filter: blur(8px);  /* hỗ trợ Safari */
+  background: #ffffff;  
   display: flex;
   align-items: center;
   justify-content: center;
@@ -11,8 +9,10 @@
   top: 0;
   left: 0;
   z-index: 1000;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* viền mảnh dưới */
+  border-bottom: 0.5px solid #e4d1b5;
 }
+
+
 
 .sidebar ul {
   display: flex;
@@ -26,20 +26,20 @@
 }
 
 .sidebar ul li a {
-  color: #fff; 
+  color: #474747; 
   text-decoration: none;
   font-size: 18px;
   font-weight: 600;
-  text-shadow: 0px 1px 2px rgba(0,0,0,0.4); /* bóng nhẹ để nổi bật */
   transition: color 0.3s ease, border-bottom 0.3s ease;
 }
 
 .sidebar ul li a:hover {
-  color: #ffd180; /* vàng nhạt khi hover */
+  color: #ffd180;
 }
 
 .sidebar ul li a.active {
-  color: #ffa726;
-  border-bottom: 2px solid #ffa726;
+  color: #b7791f; 
+  border-bottom: 2px solid #b7791f;
   padding-bottom: 4px;
 }
+

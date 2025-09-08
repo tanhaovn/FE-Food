@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import App from "./App.jsx";
-import OrderUser from "./component/OrderUser/OrderUser.jsx";
+import NewOrder from "./component/NewApp/NewOrder.jsx";
 import Dashboard from "./component/Dashboard/Dashboard.jsx";
 import Login from "./pages/login/login.jsx";
 import NewApp from "./component/NewApp/NewApp.jsx";
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/order",
-        element: <OrderUser />,
+        element: <NewOrder />,
       },
       {
         path: "/setting",

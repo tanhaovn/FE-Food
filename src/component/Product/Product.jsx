@@ -34,7 +34,7 @@ const Product = ({ onAddProduct }) => {
           + Add New Product
         </button>
       </div>
-
+      
       {showForm && (
         <div className="modal-overlay">
           <div className="modal">
