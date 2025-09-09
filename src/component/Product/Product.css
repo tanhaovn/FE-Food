@@ -1,0 +1,103 @@
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+}
+
+.product-item {
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.search-box input {
+  padding: 5px 10px;
+  width: 200px;
+}
+
+.product-view {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #ff8c00;
+  border: 1px solid #ff8c00;
+  padding: 40px 60px;
+  z-index: 1000;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+
+  text-align: center;
+  color: #fff;
+  font-family: sans-serif;
+}
+
+.product-view button {
+  margin-top: 20px;
+  background: #d9534f;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.product-view button:hover {
+  background: #c9302c;
+}
+
+.actions button,
+.product-view button {
+  background: #643802;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.actions button:hover,
+.product-view button:hover {
+  background: #e07b00;
+}
+
+.Save-btn {
+  background: #b26302e8;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.Save-btn:hover {
+  background: #e07b00;
+}
+
+.Cancel-btn {
+  background: #ff8c00;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.Cancel-btn:hover {
+  background: #e07b00;
+}
