@@ -54,7 +54,7 @@ const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
         </div>
         <button className="btn filter-btn">Filter</button>
         <button className="btn add-btn" onClick={() => setShowAddForm(true)}>
-          + Add New Product
+          + Add New Categories
         </button>
       </div>
 
@@ -115,10 +115,10 @@ const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
       {showAddForm && (
         <div className="modal-overlay">
           <div className="modal">
-            <h2>Add New Product</h2>
+            <h2>Add New Categories</h2>
             <form onSubmit={handleAddSubmit}>
               <div>
-                <label>Product Name</label>
+                <label>Categories Name</label>
                 <input
                   type="text"
                   name="name"
@@ -161,10 +161,10 @@ const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
       {showEditForm && (
         <div className="modal-overlay">
           <div className="modal">
-            <h2>Update Product</h2>
+            <h2>Update Categories</h2>
             <form onSubmit={handleUpdateSubmit}>
               <div>
-                <label>Product Name</label>
+                <label>Categories Name</label>
                 <input
                   type="text"
                   name="name"
