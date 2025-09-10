@@ -8,6 +8,7 @@ import Dashboard from "./component/Dashboard/Dashboard.jsx";
 import Login from "./pages/login/login.jsx";
 import NewApp from "./component/NewApp/NewApp.jsx";
 import ErrorPage from "./pages/ErrorPage/ErrorPage.jsx"
+import NewProductCategories from "./component/ProductCategories/NewProductCategories.jsx";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "/product",
         element: <NewApp />,
+      },
+      {
+        path: "/product-categorie",
+        element: <NewProductCategories />,
       },
       {
         path: "/dashboard",

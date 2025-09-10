@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const OrderFood = ({ products, onDelete, onUpdate }) => {
   const [selected, setSelected] = useState(null);
-  const [showForm, setShowForm] = useState(false); 
+  const [showForm, setShowForm] = useState(false);
   const [editProduct, setEditProduct] = useState({});
 
   //Thêm
@@ -55,7 +55,7 @@ const OrderFood = ({ products, onDelete, onUpdate }) => {
               </td>
               <td>
                 <div className="dropdown">
-                  <button 
+                  <button
                     className="action-btn"
                     onClick={() => setSelected(selected === p.id ? null : p.id)}
                   >
@@ -130,8 +130,16 @@ const OrderFood = ({ products, onDelete, onUpdate }) => {
                 />
               </div>
               <div className="modal-actions">
-                <button type="submit" className="btn save-btn">Save</button>
-                <button type="button" className="btn cancel-btn" onClick={() => setShowForm(false)}>Cancel</button>
+                <button type="submit" className="btn save-btn">
+                  Save
+                </button>
+                <button
+                  type="button"
+                  className="btn cancel-btn"
+                  onClick={() => setShowForm(false)}
+                >
+                  Cancel
+                </button>
               </div>
             </form>
           </div>
@@ -142,4 +150,3 @@ const OrderFood = ({ products, onDelete, onUpdate }) => {
 };
 
 export default OrderFood;
-//kieu diem
