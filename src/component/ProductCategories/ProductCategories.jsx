@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 
 const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
-  // State cho thêm sản phẩm
+  // State cho thêm category
   const [showAddForm, setShowAddForm] = useState(false);
   const [newProduct, setNewProduct] = useState({
     name: "",
-    variantPrice: "",
-    status: true,
   });
 
   const handleNewChange = (e) => {
@@ -15,15 +13,12 @@ const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
 
   const handleAddSubmit = (e) => {
     e.preventDefault();
-    onAddProduct({
-      ...newProduct,
-      id: Date.now(), // id tạm thời
-    });
+    onAddProduct(newProduct); 
     setShowAddForm(false);
-    setNewProduct({ name: "", variantPrice: "", status: true });
+    setNewProduct({ name: "" });
   };
 
-  // State cho update sản phẩm
+  // State cho update category
   const [selected, setSelected] = useState(null);
   const [showEditForm, setShowEditForm] = useState(false);
   const [editProduct, setEditProduct] = useState({});
@@ -47,24 +42,23 @@ const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
     <>
       <br />
       <h1 className="title">Product Categories</h1>
-      <p className="breadcrumb">Home / Products / Product List</p>
+      <p className="breadcrumb">Home / Products / Category List</p>
       <div className="actions">
         <div className="search-box">
           <input type="text" placeholder="Search" />
         </div>
         <button className="btn filter-btn">Filter</button>
         <button className="btn add-btn" onClick={() => setShowAddForm(true)}>
-          + Add New Categories
+          + Add New Category
         </button>
       </div>
 
+      {/* Table */}
       <table className="product-table">
         <thead>
           <tr>
             <th>No</th>
             <th>Name</th>
-            <th>Variant Price</th>
-            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -73,19 +67,6 @@ const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
             <tr key={p.id}>
               <td>{index + 1}</td>
               <td>{p.name}</td>
-              <td className="variant">{p.variantPrice}</td>
-              <td>
-                <label className="switch">
-                  <input
-                    type="checkbox"
-                    checked={p.status}
-                    onChange={() =>
-                      onUpdate({ ...p, status: !p.status })
-                    }
-                  />
-                  <span className="slider"></span>
-                </label>
-              </td>
               <td>
                 <div className="dropdown">
                   <button
@@ -99,7 +80,10 @@ const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
                   {selected === p.id && (
                     <div className="dropdown-menu">
                       <button onClick={() => handleEditClick(p)}>Edit</button>
-                      <button onClick={() => onDelete(p.id)} className="delete-btn">
+                      <button
+                        onClick={() => onDelete(p.id)}
+                        className="delete-btn"
+                      >
                         Delete
                       </button>
                     </div>
@@ -115,10 +99,10 @@ const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
       {showAddForm && (
         <div className="modal-overlay">
           <div className="modal">
-            <h2>Add New Categories</h2>
+            <h2>Add New Category</h2>
             <form onSubmit={handleAddSubmit}>
               <div>
-                <label>Categories Name</label>
+                <label>Category Name</label>
                 <input
                   type="text"
                   name="name"
@@ -126,19 +110,6 @@ const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
                   onChange={handleNewChange}
                   required
                 />
-              </div>
-              <div>
-                <label>Variant Price</label>
-                <select
-                  name="variantPrice"
-                  value={newProduct.variantPrice}
-                  onChange={handleNewChange}
-                  required
-                >
-                  <option value="">-- Select --</option>
-                  <option value="Additional Price">Additional Price</option>
-                  <option value="Specific Price">Specific Price</option>
-                </select>
               </div>
               <div className="modal-actions">
                 <button type="submit" className="btn save-btn">
@@ -161,10 +132,10 @@ const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
       {showEditForm && (
         <div className="modal-overlay">
           <div className="modal">
-            <h2>Update Categories</h2>
+            <h2>Update Category</h2>
             <form onSubmit={handleUpdateSubmit}>
               <div>
-                <label>Categories Name</label>
+                <label>Category Name</label>
                 <input
                   type="text"
                   name="name"
@@ -172,19 +143,6 @@ const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
                   onChange={handleEditChange}
                   required
                 />
-              </div>
-              <div>
-                <label>Variant Price</label>
-                <select
-                  name="variantPrice"
-                  value={editProduct.variantPrice || ""}
-                  onChange={handleEditChange}
-                  required
-                >
-                  <option value="">-- Select --</option>
-                  <option value="Additional Price">Additional Price</option>
-                  <option value="Specific Price">Specific Price</option>
-                </select>
               </div>
               <div className="modal-actions">
                 <button type="submit" className="btn save-btn">
@@ -207,3 +165,4 @@ const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
 };
 
 export default ProductCategories;
+  
