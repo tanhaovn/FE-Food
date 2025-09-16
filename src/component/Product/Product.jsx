@@ -1,79 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Product.css";
-import Anh1 from "../../assets/anh1.jpg";
-import Anh2 from "../../assets/anh2.jpg";
-import Anh3 from "../../assets/anh3.jpg";
-import Anh4 from "../../assets/anh4.jpg";
-import Anh5 from "../../assets/anh5.jpg";
-import Anh6 from "../../assets/anh6.jpg";
-import Anh7 from "../../assets/anh7.jpg";
 
+const API_URL = "http://localhost:8080/api/products";
+//t k thay đổi code , mà code gì kì vậy
 const Product = () => {
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      name: "Grilled Salmon",
-      category: "Food and Beverage",
-      price: 12.0,
-      stock: 50,
-      status: true,
-      img: Anh1,
-    },
-    {
-      id: 2,
-      name: "BBQ Ribs",
-      category: "Food and Beverage",
-      price: 15.0,
-      stock: 40,
-      status: true,
-      img: Anh2,
-    },
-    {
-      id: 3,
-      name: "Beef Steak",
-      category: "Food and Beverage",
-      price: 18.0,
-      stock: 30,
-      status: true,
-      img: Anh3,
-    },
-    {
-      id: 4,
-      name: "Chicken with Rice",
-      category: "Food and Beverage",
-      price: 10.0,
-      stock: 60,
-      status: true,
-      img: Anh4,
-    },
-    {
-      id: 5,
-      name: "Fried Chicken Wings",
-      category: "Food and Beverage",
-      price: 8.0,
-      stock: 80,
-      status: true,
-      img: Anh5,
-    },
-    {
-      id: 6,
-      name: "Seafood Platter",
-      category: "Food and Snack",
-      price: 20.0,
-      stock: 25,
-      status: true,
-      img: Anh6,
-    },
-    {
-      id: 7,
-      name: "French Toast with Sugar",
-      category: "Food and Snack",
-      price: 6.0,
-      stock: 100,
-      status: true,
-      img: Anh7,
-    },
-  ]);
+  const [products, setProducts] = useState([]);
 
   // State cho Add
   const [showAddForm, setShowAddForm] = useState(false);
@@ -88,23 +19,54 @@ const Product = () => {
   // State cho Update
   const [showEditForm, setShowEditForm] = useState(false);
   const [editProduct, setEditProduct] = useState(null);
-
   const [selected, setSelected] = useState(null);
 
-  // Xử lý input Add
+  useEffect(() => {
+    fetch(API_URL, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("📥 API response:", data);
+        setProducts(data.data || []);
+      })
+      .catch((err) => console.error(" Fetch error:", err));
+  }, []);
+
+  // Add Product
   const handleAddChange = (e) => {
     setNewProduct({ ...newProduct, [e.target.name]: e.target.value });
   };
 
   const handleAddSubmit = (e) => {
     e.preventDefault();
-    const newId = products.length ? products[products.length - 1].id + 1 : 1;
-    setProducts([...products, { ...newProduct, id: newId, status: true }]);
-    setNewProduct({ name: "", category: "", price: "", stock: "", img: "" });
-    setShowAddForm(false);
+
+    const formData = new FormData();
+    Object.entries(newProduct).forEach(([key, value]) =>
+      formData.append(key, value)
+    );
+
+    fetch(API_URL, {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setProducts([...products, data]);
+        setNewProduct({
+          name: "",
+          category: "",
+          price: "",
+          stock: "",
+          img: "",
+        });
+        setShowAddForm(false);
+      })
+      .catch((err) => console.error("Add product error:", err));
   };
 
-  // Xử lý Update
+  // Update Product
   const handleEditClick = (product) => {
     setEditProduct(product);
     setShowEditForm(true);
@@ -116,15 +78,31 @@ const Product = () => {
 
   const handleUpdateSubmit = (e) => {
     e.preventDefault();
-    setProducts(
-      products.map((p) => (p.id === editProduct.id ? editProduct : p))
+
+    const formData = new FormData();
+    Object.entries(editProduct).forEach(([key, value]) =>
+      formData.append(key, value)
     );
-    setShowEditForm(false);
+
+    fetch(`${API_URL}/${editProduct.id}`, {
+      method: "PATCH",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setProducts(products.map((p) => (p.id === data.id ? data : p)));
+        setShowEditForm(false);
+      })
+      .catch((err) => console.error("Update product error:", err));
   };
 
-  // Xóa
+  // Delete Product
   const deleteProduct = (id) => {
-    setProducts(products.filter((p) => p.id !== id));
+    fetch(`${API_URL}/${id}`, { method: "DELETE" })
+      .then(() => {
+        setProducts(products.filter((p) => p.id !== id));
+      })
+      .catch((err) => console.error("Delete product error:", err));
   };
 
   return (
@@ -215,7 +193,7 @@ const Product = () => {
         </div>
       )}
 
-      {/* Bảng sản phẩm */}
+      {/* Table */}
       <table className="product-table">
         <thead>
           <tr>
