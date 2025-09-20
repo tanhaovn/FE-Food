@@ -8,49 +8,48 @@ const API_URL = "http://localhost:8080/api/categories";
 const NewProductCategories = () => {
   const [products, setProducts] = useState([]);
 
-  // Fetch all categories
   useEffect(() => {
     axios
       .get(API_URL)
       .then((res) => {
-        console.log("📥 API response:", res.data);
-        setProducts(res.data.data); // ✅ lấy mảng data từ BE
+        console.log("API response:", res.data);
+        setProducts(res.data.data);
       })
-      .catch((err) => console.error("❌ Lỗi fetch categories:", err));
+      .catch((err) => console.error(err));
   }, []);
 
-  // Xóa category
+  // Xóa
   const deleteProduct = (id) => {
     axios
       .delete(`${API_URL}/${id}`)
       .then(() => {
-        setProducts(products.filter((p) => p.id !== id));
+        setProducts(products.filter((value) => value.id !== id));
       })
-      .catch((err) => console.error("❌ Lỗi khi xóa:", err));
+      .catch((err) => console.error(err));
   };
 
-  // Cập nhật category
+  // Cập nhật
   const updateProduct = (updatedProduct) => {
     axios
       .patch(`${API_URL}/${updatedProduct.id}`, updatedProduct)
       .then((res) => {
         setProducts(
-          products.map((p) =>
-            p.id === updatedProduct.id ? res.data.data : p
+          products.map((value) =>
+            value.id === updatedProduct.id ? res.data.data : value
           )
         );
       })
-      .catch((err) => console.error("❌ Lỗi khi update:", err));
+      .catch((err) => console.error(err));
   };
 
-  // Thêm category
+  // Thêm
   const addProduct = (newProduct) => {
     axios
       .post(API_URL, newProduct)
       .then((res) => {
-        setProducts([...products, res.data.data]); // ✅ thêm data mới
+        setProducts([...products, res.data.data]);
       })
-      .catch((err) => console.error("❌ Lỗi khi thêm:", err));
+      .catch((err) => console.error(err));
   };
 
   return (

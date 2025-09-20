@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
-  // State cho thêm category
+  // State Add
   const [showAddForm, setShowAddForm] = useState(false);
   const [newProduct, setNewProduct] = useState({
     name: "",
@@ -13,12 +13,12 @@ const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
 
   const handleAddSubmit = (e) => {
     e.preventDefault();
-    onAddProduct(newProduct); 
+    onAddProduct(newProduct);
     setShowAddForm(false);
     setNewProduct({ name: "" });
   };
 
-  // State cho update category
+  // State Update
   const [selected, setSelected] = useState(null);
   const [showEditForm, setShowEditForm] = useState(false);
   const [editProduct, setEditProduct] = useState({});
@@ -52,8 +52,6 @@ const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
           + Add New Category
         </button>
       </div>
-
-      {/* Table */}
       <table className="product-table">
         <thead>
           <tr>
@@ -63,25 +61,23 @@ const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
           </tr>
         </thead>
         <tbody>
-          {products.map((p, index) => (
-            <tr key={p.id}>
+          {products.map((value, index) => (
+            <tr key={value.id}>
               <td>{index + 1}</td>
-              <td>{p.name}</td>
+              <td>{value.name}</td>
               <td>
                 <div className="dropdown">
                   <button
                     className="action-btn"
-                    onClick={() =>
-                      setSelected(selected === p.id ? null : p.id)
-                    }
+                    onClick={() => setSelected(selected === value.id ? null : value.id)}
                   >
                     ⋮
                   </button>
-                  {selected === p.id && (
+                  {selected === value.id && (
                     <div className="dropdown-menu">
-                      <button onClick={() => handleEditClick(p)}>Edit</button>
+                      <button onClick={() => handleEditClick(value)}>Edit</button>
                       <button
-                        onClick={() => onDelete(p.id)}
+                        onClick={() => onDelete(value.id)}
                         className="delete-btn"
                       >
                         Delete
@@ -94,8 +90,7 @@ const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
           ))}
         </tbody>
       </table>
-
-      {/* Modal Add */}
+      {/* Add */}
       {showAddForm && (
         <div className="modal-overlay">
           <div className="modal">
@@ -128,7 +123,7 @@ const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
         </div>
       )}
 
-      {/* Modal Update */}
+      {/* Update */}
       {showEditForm && (
         <div className="modal-overlay">
           <div className="modal">
@@ -165,4 +160,3 @@ const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
 };
 
 export default ProductCategories;
-  

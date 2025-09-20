@@ -3,13 +3,11 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import App from "./App.jsx";
-import NewOrder from "./component/NewApp/NewOrder.jsx";
 import Dashboard from "./component/Dashboard/Dashboard.jsx";
 import Login from "./pages/login/login.jsx";
-import NewApp from "./component/NewApp/NewApp.jsx";
 import ErrorPage from "./pages/ErrorPage/ErrorPage.jsx"
 import NewProductCategories from "./component/ProductCategories/NewProductCategories.jsx";
-import Product from "./component/Product/Product.jsx";
+import NewProduct from "./component/Product/NewProduct.jsx";
 
 const router = createBrowserRouter([
   {
@@ -19,23 +17,19 @@ const router = createBrowserRouter([
     children: [
       {
         index:true,
-        element:<NewApp /> 
-      },
-      {
-        path: "/product-list",
-        element: <Product />,
+        element:<NewProductCategories /> 
       },
       {
         path: "/product-categorie",
-        element: <NewProductCategories />,
+        element: <NewProductCategories/>,
+      },
+      {
+        path: "/product-list",
+        element: <NewProduct/>,
       },
       {
         path: "/dashboard",
         element: <Dashboard />,
-      },
-      {
-        path: "/order",
-        element: <NewOrder />,
       },
       {
         path: "/setting",
