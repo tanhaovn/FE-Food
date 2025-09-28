@@ -1,70 +1,72 @@
 import React, { useState } from "react";
 
-const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
+const ChooseTable = ({ tables, onAddTable, onUpdate, onDelete }) => {
   // Add
   const [showAddForm, setShowAddForm] = useState(false);
-  const [newProduct, setNewProduct] = useState({
+  const [newTable, setNewTable] = useState({
     name: "",
+    status: 0,
   });
 
   const handleNewChange = (e) => {
-    setNewProduct({ ...newProduct, [e.target.name]: e.target.value });
+    setNewTable({ ...newTable, [e.target.name]: e.target.value });
   };
 
   const handleAddSubmit = (e) => {
     e.preventDefault();
-    onAddProduct(newProduct);
+    onAddTable(newTable);
     setShowAddForm(false);
-    setNewProduct({ name: "" });
+    setNewTable({ name: "", status: 0 });
   };
 
   // Update
   const [selected, setSelected] = useState(null);
   const [showEditForm, setShowEditForm] = useState(false);
-  const [editProduct, setEditProduct] = useState({});
+  const [editTable, setEditTable] = useState({});
 
-  const handleEditClick = (product) => {
-    setEditProduct(product);
+  const handleEditClick = (table) => {
+    setEditTable(table);
     setShowEditForm(true);
   };
 
   const handleEditChange = (e) => {
-    setEditProduct({ ...editProduct, [e.target.name]: e.target.value });
+    setEditTable({ ...editTable, [e.target.name]: e.target.value });
   };
 
   const handleUpdateSubmit = (e) => {
     e.preventDefault();
-    onUpdate(editProduct);
+    onUpdate(editTable);
     setShowEditForm(false);
   };
-  
+
   return (
     <>
-      <br />
-      <h1 className="title">Product Categories</h1>
-      <p className="breadcrumb">Home / Products / Category List</p>
+      <h1 className="title">Danh sách bàn</h1>
+      <p className="breadcrumb">Trang chủ / Quản lý bàn</p>
       <div className="actions">
         <div className="search-box">
-          <input type="text" placeholder="Search" />
+          <input type="text" placeholder="Tìm bàn..." />
         </div>
-        <button className="btn filter-btn">Filter</button>
+        <button className="btn filter-btn">Lọc</button>
         <button className="btn add-btn" onClick={() => setShowAddForm(true)}>
-          + Add New Category
+          + Thêm bàn
         </button>
       </div>
       <table className="product-table">
         <thead>
           <tr>
-            <th>No</th>
-            <th>Name</th>
-            <th>Action</th>
+            <th>ID</th>
+            <th>Tên bàn</th>
+            <th>Trạng thái</th>
+            <th>Thao tác</th>
           </tr>
         </thead>
         <tbody>
-          {products.map((value, index) => (
+          {tables.map((value) => (
             <tr key={value.id}>
-              <td>{index + 1}</td>
+              <td>{value.id}</td>
               <td>{value.name}</td>
+              <td>{value.status === 1 ? "Đang hoạt động" : "Trống"}</td>
               <td>
                 <div className="dropdown">
                   <button
@@ -78,13 +80,13 @@ const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
                   {selected === value.id && (
                     <div className="dropdown-menu">
                       <button onClick={() => handleEditClick(value)}>
-                        Edit
+                        Sửa
                       </button>
                       <button
                         onClick={() => onDelete(value.id)}
                         className="delete-btn"
                       >
-                        Delete
+                        Xóa
                       </button>
                     </div>
                   )}
@@ -94,32 +96,44 @@ const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
           ))}
         </tbody>
       </table>
+
       {/* Add */}
       {showAddForm && (
         <div className="modal-overlay">
           <div className="modal">
-            <h2>Add New Category</h2>
+            <h2>Thêm bàn mới</h2>
             <form onSubmit={handleAddSubmit}>
               <div>
-                <label>Category Name</label>
+                <label>Tên bàn</label>
                 <input
                   type="text"
                   name="name"
-                  value={newProduct.name}
+                  value={newTable.name}
                   onChange={handleNewChange}
                   required
                 />
               </div>
+              <div>
+                <label>Trạng thái</label>
+                <select
+                  name="status"
+                  value={newTable.status}
+                  onChange={handleNewChange}
+                >
+                  <option value={0}>Trống</option>
+                  <option value={1}>Đang hoạt động</option>
+                </select>
+              </div>
               <div className="modal-actions">
                 <button type="submit" className="btn save-btn">
-                  Save
+                  Lưu
                 </button>
                 <button
                   type="button"
                   className="btn cancel-btn"
                   onClick={() => setShowAddForm(false)}
                 >
-                  Cancel
+                  Hủy
                 </button>
               </div>
             </form>
@@ -131,28 +145,39 @@ const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
       {showEditForm && (
         <div className="modal-overlay">
           <div className="modal">
-            <h2>Update Category</h2>
+            <h2>Cập nhật bàn</h2>
             <form onSubmit={handleUpdateSubmit}>
               <div>
-                <label>Category Name</label>
+                <label>Tên bàn</label>
                 <input
                   type="text"
                   name="name"
-                  value={editProduct.name || ""}
+                  value={editTable.name || ""}
                   onChange={handleEditChange}
                   required
                 />
               </div>
+              <div>
+                <label>Trạng thái</label>
+                <select
+                  name="status"
+                  value={editTable.status || 0}
+                  onChange={handleEditChange}
+                >
+                  <option value={0}>Trống</option>
+                  <option value={1}>Đang hoạt động</option>
+                </select>
+              </div>
               <div className="modal-actions">
                 <button type="submit" className="btn save-btn">
-                  Save
+                  Lưu
                 </button>
                 <button
                   type="button"
                   className="btn cancel-btn"
                   onClick={() => setShowEditForm(false)}
                 >
-                  Cancel
+                  Hủy
                 </button>
               </div>
             </form>
@@ -163,4 +188,4 @@ const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
   );
 };
 
-export default ProductCategories;
+export default ChooseTable;

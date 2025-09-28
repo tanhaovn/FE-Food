@@ -1,45 +1,157 @@
 .error-container {
+  min-height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  background: #fdfdfd; 
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 2rem;
+}
+
+.error-content {
   text-align: center;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 500px;
+  background: #ffffff;
+  padding: 3rem 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f1f3f4;
+}
+
+.error-icon {
+  margin-bottom: 1.5rem;
+}
+
+.error-icon svg {
+  font-size: 4rem;
+  color: #ff6b35;
+  opacity: 0.8;
 }
 
 .error-title {
-  font-size: 3rem;
-  font-weight: bold;
-  color: #a86b00; 
-  margin-bottom: 10px;
+  font-size: 5rem;
+  font-weight: 800;
+  color: #2c3e50;
+  margin: 0 0 0.5rem 0;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.error-subtitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ff6b35;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.5px;
 }
 
 .error-message {
-  font-size: 1.2rem;
-  color: #555;
-  margin-bottom: 20px;
+  font-size: 1.1rem;
+  color: #6c757d;
+  line-height: 1.6;
+  margin-bottom: 2rem;
 }
 
 .error-btn {
-  padding: 12px 25px;
-  background: #a86b00;
-  color: #fff;
-  border-radius: 25px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: #ff6b35;
+  color: #ffffff;
   text-decoration: none;
   font-size: 1rem;
-  font-weight: 500;
-  transition: all 0.3s ease-in-out;
-  box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+  font-weight: 600;
+  border-radius: 50px;
+  margin-bottom: 2rem;
+  border: none;
+  cursor: pointer;
 }
 
 .error-btn:hover {
-  background: #c27c00;
-  transform: scale(1.05);
+  background: #e55a2b;
+  text-decoration: none;
+  color: #ffffff;
 }
-.icon-left {
-  margin-right: 8px;
+
+.home-icon {
   font-size: 1.1rem;
-  vertical-align: middle;
+}
+
+.error-suggestions {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.error-suggestions p {
+  font-size: 1rem;
+  color: #495057;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.error-suggestions ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.error-suggestions li {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.error-suggestions li::before {
+  content: "•";
+  color: #ff6b35;
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .error-container {
+    padding: 1rem;
+  }
+  
+  .error-content {
+    padding: 2rem 1.5rem;
+  }
+  
+  .error-title {
+    font-size: 4rem;
+  }
+  
+  .error-subtitle {
+    font-size: 1.3rem;
+  }
+  
+  .error-message {
+    font-size: 1rem;
+  }
+  
+  .error-btn {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .error-title {
+    font-size: 3rem;
+  }
+  
+  .error-icon svg {
+    font-size: 3rem;
+  }
+  
+  .error-subtitle {
+    font-size: 1.2rem;
+  }
 }

@@ -12,7 +12,7 @@ const NewProductCategories = () => {
     axios
       .get(API_URL)
       .then((res) => {
-        console.log("API response:", res.data);
+        console.log(res.data);
         setProducts(res.data.data);
       })
       .catch((err) => console.error(err));

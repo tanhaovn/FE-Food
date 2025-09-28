@@ -5,42 +5,53 @@ import "./index.css";
 import App from "./App.jsx";
 import Dashboard from "./component/Dashboard/Dashboard.jsx";
 import Login from "./pages/login/login.jsx";
-import ErrorPage from "./pages/ErrorPage/ErrorPage.jsx"
+import ErrorPage from "./pages/ErrorPage/ErrorPage.jsx";
 import NewProductCategories from "./component/ProductCategories/NewProductCategories.jsx";
 import NewProduct from "./component/Product/NewProduct.jsx";
+import NewChooseTable from "./component/Table/NewChooseTable.jsx";
+import CategoriesPage from "./features/categories/CategoriesPage.jsx";
+import ProductsPage from "./features/products/ProductsPage.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    errorElement: <ErrorPage />, 
+    errorElement: <ErrorPage />,
     children: [
       {
-        index:true,
-        element:<NewProductCategories /> 
+        index: true,
+        element: <ProductsPage />,
       },
       {
         path: "/product-categorie",
-        element: <NewProductCategories/>,
+        element: <NewProductCategories />,
+      },
+      {
+        path: "/1111",
+        element: <CategoriesPage />,
       },
       {
         path: "/product-list",
-        element: <NewProduct/>,
+        element: <NewProduct />,
+      },
+      {
+        path: "/table",
+        element: <NewChooseTable />,
       },
       {
         path: "/dashboard",
-        element: <Dashboard />,
+        element: <ProductsPage />,
       },
       {
         path: "/setting",
         element: <div>Setting</div>,
       },
     ],
-  },  
+  },
   {
     path: "/login",
     element: <Login />,
-    errorElement: <ErrorPage />, 
+    errorElement: <ErrorPage />,
   },
 ]);
 createRoot(document.getElementById("root")).render(

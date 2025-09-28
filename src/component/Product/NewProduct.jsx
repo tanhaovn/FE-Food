@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./Product.css"
+import "./Product.css";
 import Product from "./Product";
 
 const API_URL_PRODUCTS = "http://localhost:8080/api/products";
@@ -41,31 +41,31 @@ const NewProduct = () => {
   };
 
   // Cập nhật
-const updateProduct = (updatedProduct) => {
-  const formData = new FormData();
-  formData.append("name", updatedProduct.name);
-  formData.append("description", updatedProduct.description);
-  formData.append("price", updatedProduct.price);
-  formData.append("status", updatedProduct.status || 1); 
-  formData.append("category_id", updatedProduct.categoryId); 
-  if (updatedProduct.image) {
-    formData.append("image", updatedProduct.image);
-  }
+  const updateProduct = (updatedProduct) => {
+    const formData = new FormData();
+    formData.append("name", updatedProduct.name);
+    formData.append("description", updatedProduct.description);
+    formData.append("price", updatedProduct.price);
+    formData.append("status", updatedProduct.status || 1);
+    formData.append("category_id", updatedProduct.categoryId);
+    if (updatedProduct.image) {
+      formData.append("image", updatedProduct.image);
+    }
 
-  axios
-    .patch(`${API_URL_PRODUCTS}/${updatedProduct.id}`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    })
-    .then(() => {
-      return axios.get(API_URL_PRODUCTS);
-    })
-    .then((res) => {
-      setProducts(res.data?.data || []);
-    })
-    .catch((err) =>
-      console.error("UPDATE error:", err.response?.data || err)
-    );
-};
+    axios
+      .patch(`${API_URL_PRODUCTS}/${updatedProduct.id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then(() => {
+        return axios.get(API_URL_PRODUCTS);
+      })
+      .then((res) => {
+        setProducts(res.data?.data || []);
+      })
+      .catch((err) =>
+        console.error("UPDATE error:", err.response?.data || err)
+      );
+  };
 
   // Thêm
   const addProduct = (newProduct) => {
