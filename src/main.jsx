@@ -9,8 +9,8 @@ import ErrorPage from "./pages/ErrorPage/ErrorPage.jsx";
 import NewProductCategories from "./component/ProductCategories/NewProductCategories.jsx";
 import NewProduct from "./component/Product/NewProduct.jsx";
 import NewChooseTable from "./component/Table/NewChooseTable.jsx";
-import CategoriesPage from "./features/categories/CategoriesPage.jsx";
 import ProductsPage from "./features/products/ProductsPage.jsx";
+import NewChooseOrder from "./component/OrderFood/NewChooseOrder.jsx";
 
 const router = createBrowserRouter([
   {
@@ -20,15 +20,11 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <ProductsPage />,
+        element: <NewProductCategories />,
       },
       {
         path: "/product-categorie",
         element: <NewProductCategories />,
-      },
-      {
-        path: "/1111",
-        element: <CategoriesPage />,
       },
       {
         path: "/product-list",
@@ -39,9 +35,13 @@ const router = createBrowserRouter([
         element: <NewChooseTable />,
       },
       {
-        path: "/dashboard",
-        element: <ProductsPage />,
+        path: "/order-product",
+        element: <NewChooseOrder />,
       },
+      // {
+      //   path: "/dashboard",
+      //   element: <ProductsPage />,
+      // },
       {
         path: "/setting",
         element: <div>Setting</div>,

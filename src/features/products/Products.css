@@ -495,7 +495,6 @@ input:checked + .slider:before {
   box-shadow: 0 4px 12px rgba(183, 121, 31, 0.4);
 }
 
-/* Responsive improvements */
 @media (max-width: 768px) {
   .container {
     padding: 20px;
@@ -531,7 +530,7 @@ input:checked + .slider:before {
   border-spacing: 0;
   background: #ffffff;
   border-radius: 12px;
-  overflow: visible; /* Thay vì hidden */
+  overflow: visible; 
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   border: 1px solid rgba(0, 0, 0, 0.06);
 }

@@ -3,21 +3,17 @@ import { NavLink } from "react-router-dom";
 import "./Sidebar.css";
 
 const Sidebar = () => {
-  const [open, setOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState(null); 
   const dropdownRef = useRef(null);
 
-  // Fermer le dropdown quand on clique à l'extérieur
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setOpen(false);
+        setOpenMenu(null);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -27,63 +23,83 @@ const Sidebar = () => {
           <span className="logo-icon">🍔</span>
           <span className="logo-text">MyRestaurant</span>
         </div>
-        
+
         <nav className="navigation">
-          <ul className="nav-list">
-            <li className="nav-item dropdown" ref={dropdownRef}>
+          <ul className="nav-list" ref={dropdownRef}>     
+            <li className="nav-item dropdown">
               <div
-                className={`dropdown-toggle ${open ? 'active' : ''}`}
-                onClick={() => setOpen(!open)}
+                className={`dropdown-toggle ${openMenu === "products" ? "active" : ""}`}
+                onClick={() => setOpenMenu(openMenu === "products" ? null : "products")}
                 role="button"
                 tabIndex={0}
-                onKeyDown={(e) => e.key === 'Enter' && setOpen(!open)}
+                onKeyDown={(e) =>
+                  e.key === "Enter" && setOpenMenu(openMenu === "products" ? null : "products")
+                }
               >
-                <span>Products</span>
-                <svg 
-                  className={`dropdown-arrow ${open ? 'rotated' : ''}`}
-                  width="12" 
-                  height="12" 
+                <span>📦 Products</span>
+                <svg
+                  className={`dropdown-arrow ${openMenu === "products" ? "rotated" : ""}`}
+                  width="12"
+                  height="12"
                   viewBox="0 0 12 12"
                 >
-                  <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="2" fill="none"/>
+                  <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="2" fill="none" />
                 </svg>
               </div>
-              {open && (
+              {openMenu === "products" && (
                 <ul className="dropdown-menu">
                   <li>
-                    <NavLink to="/product-categorie" onClick={() => setOpen(false)}>
+                    <NavLink to="/product-categorie" onClick={() => setOpenMenu(null)}>
                       <span className="menu-icon">📂</span>
                       Categories
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/product-list" onClick={() => setOpen(false)}>
+                    <NavLink to="/product-list" onClick={() => setOpenMenu(null)}>
                       <span className="menu-icon">📋</span>
                       List Product
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/table" onClick={() => setOpen(false)}>
-                      <span className="menu-icon">🪑</span>
-                      Tables
                     </NavLink>
                   </li>
                 </ul>
               )}
             </li>
-            
-            <li className="nav-item">
-              <NavLink to="/dashboard" className="nav-link">
-                <span className="nav-icon">📊</span>
-                Tableau de bord
-              </NavLink>
-            </li>
-            
-            <li className="nav-item">
-              <NavLink to="/order" className="nav-link">
-                <span className="nav-icon">📝</span>
-                Commandes
-              </NavLink>
+
+            <li className="nav-item dropdown">
+              <div
+                className={`dropdown-toggle ${openMenu === "order" ? "active" : ""}`}
+                onClick={() => setOpenMenu(openMenu === "order" ? null : "order")}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) =>
+                  e.key === "Enter" && setOpenMenu(openMenu === "order" ? null : "order")
+                }
+              >
+                <span>📝 Order</span>
+                <svg
+                  className={`dropdown-arrow ${openMenu === "order" ? "rotated" : ""}`}
+                  width="12"
+                  height="12"
+                  viewBox="0 0 12 12"
+                >
+                  <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="2" fill="none" />
+                </svg>
+              </div>
+              {openMenu === "order" && (
+                <ul className="dropdown-menu">
+                  <li>
+                    <NavLink to="/table" onClick={() => setOpenMenu(null)}>
+                      <span className="menu-icon">🪑</span>
+                      Tables
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/order-product" onClick={() => setOpenMenu(null)}>
+                      <span className="menu-icon">📦</span>
+                      Order Product
+                    </NavLink>
+                  </li>
+                </ul>
+              )}
             </li>
           </ul>
         </nav>

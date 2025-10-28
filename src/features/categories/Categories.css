@@ -1,5 +1,6 @@
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", sans-serif;
   background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
   color: #333;
   margin: 0;
@@ -293,7 +294,7 @@ input:checked + .slider:before {
 }
 
 .modal h2::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -8px;
   left: 50%;
@@ -494,31 +495,30 @@ input:checked + .slider:before {
   box-shadow: 0 4px 12px rgba(183, 121, 31, 0.4);
 }
 
-/* Responsive improvements */
 @media (max-width: 768px) {
   .container {
     padding: 20px;
     margin: 10px;
   }
-  
+
   .actions {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .search-box input {
     width: 100%;
   }
-  
+
   .modal {
     width: 95%;
     padding: 25px;
   }
-  
+
   .product-table {
     font-size: 13px;
   }
-  
+
   .product-table th,
   .product-table td {
     padding: 12px 8px;
@@ -530,7 +530,7 @@ input:checked + .slider:before {
   border-spacing: 0;
   background: #ffffff;
   border-radius: 12px;
-  overflow: visible; /* Thay vì hidden */
+  overflow: visible; 
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   border: 1px solid rgba(0, 0, 0, 0.06);
 }

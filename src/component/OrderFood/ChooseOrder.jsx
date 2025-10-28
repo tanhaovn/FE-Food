@@ -1,51 +1,39 @@
 import React, { useState } from "react";
 
-const ChooseTable = ({ tables = [], onAddTable, onUpdate, onDelete }) => {
-  // Thêm bàn
+const ChooseOrder = ({ orders = [], onAddOrder, onUpdate, onDelete }) => {
   const [showAddForm, setShowAddForm] = useState(false);
-  const [newTable, setNewTable] = useState({ status: "Trống" });
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [selected, setSelected] = useState(null);
+  const [newOrder, setNewOrder] = useState({
+    tableId: "",
+    status: "New Order",
+    total_amount: 0,
+  });
+  const [editOrder, setEditOrder] = useState({});
 
-  const handleNewChange = (e) => {
-    setNewTable({ ...newTable, [e.target.name]: e.target.value });
-  };
-
+  // thêm
   const handleAddSubmit = (e) => {
     e.preventDefault();
-    onAddTable(newTable);
+    onAddOrder(newOrder);
     setShowAddForm(false);
-    setNewTable({ status: "Trống" });
+    setNewOrder({ tableId: "", status: "New Order", total_amount: 0 });
   };
 
-  // Cập nhật bàn
-  const [selected, setSelected] = useState(null);
-  const [showEditForm, setShowEditForm] = useState(false);
-  const [editTable, setEditTable] = useState({});
-
-  const handleEditClick = (table) => {
-    setEditTable(table);
-    setShowEditForm(true);
-    setSelected(null);
-  };
-
-  const handleEditChange = (e) => {
-    setEditTable({ ...editTable, [e.target.name]: e.target.value });
-  };
-
+  // cập nhật
   const handleUpdateSubmit = (e) => {
     e.preventDefault();
-    onUpdate(editTable);
+    onUpdate(editOrder);
     setShowEditForm(false);
-    setSelected(null);
   };
 
   return (
     <>
-      <h1 className="title">Danh sách bàn</h1>
-      <p className="breadcrumb">Trang chủ / Quản lý bàn</p>
+      <h1 className="title">Danh sách đơn hàng</h1>
+      <p className="breadcrumb">Trang chủ / Quản lý đơn hàng</p>
 
       <div className="actions">
         <button className="btn add-btn" onClick={() => setShowAddForm(true)}>
-          + Thêm bàn
+          + Thêm đơn hàng
         </button>
       </div>
 
@@ -53,20 +41,22 @@ const ChooseTable = ({ tables = [], onAddTable, onUpdate, onDelete }) => {
         <thead>
           <tr>
             <th>ID</th>
+            <th>Bàn</th>
             <th>Trạng thái</th>
+            <th>Tổng tiền</th>
             <th>Ngày tạo</th>
-            <th>Ngày cập nhật</th>
             <th>Thao tác</th>
           </tr>
         </thead>
         <tbody>
-          {tables.length > 0 ? (
-            tables.map((value) => (
+          {orders.length > 0 ? (
+            orders.map((value) => (
               <tr key={value.id}>
                 <td>{value.id}</td>
+                <td>{value.table?.id || "—"}</td>
                 <td>{value.status}</td>
+                <td>{value.total_amount}</td>
                 <td>{new Date(value.createdAt).toLocaleString()}</td>
-                <td>{new Date(value.updatedAt).toLocaleString()}</td>
                 <td>
                   <div className="dropdown">
                     <button
@@ -79,7 +69,13 @@ const ChooseTable = ({ tables = [], onAddTable, onUpdate, onDelete }) => {
                     </button>
                     {selected === value.id && (
                       <div className="dropdown-menu">
-                        <button onClick={() => handleEditClick(value)}>
+                        <button
+                          onClick={() => {
+                            setEditOrder(value);
+                            setShowEditForm(true);
+                            setSelected(null);
+                          }}
+                        >
                           Sửa
                         </button>
                         <button
@@ -99,7 +95,7 @@ const ChooseTable = ({ tables = [], onAddTable, onUpdate, onDelete }) => {
             ))
           ) : (
             <tr>
-              <td colSpan="5">Chưa có bàn nào</td>
+              <td colSpan="6">Chưa có đơn hàng nào</td>
             </tr>
           )}
         </tbody>
@@ -109,18 +105,47 @@ const ChooseTable = ({ tables = [], onAddTable, onUpdate, onDelete }) => {
       {showAddForm && (
         <div className="modal-overlay">
           <div className="modal">
-            <h2>Thêm bàn mới</h2>
+            <h2>Thêm đơn hàng</h2>
             <form onSubmit={handleAddSubmit}>
+              <div>
+                <label>ID bàn</label>
+                <input
+                  name="tableId"
+                  value={newOrder.tableId}
+                  onChange={(e) =>
+                    setNewOrder({ ...newOrder, tableId: e.target.value })
+                  }
+                  required
+                />
+              </div>
               <div>
                 <label>Trạng thái</label>
                 <select
                   name="status"
-                  value={newTable.status}
-                  onChange={handleNewChange}
+                  value={newOrder.status}
+                  onChange={(e) =>
+                    setNewOrder({ ...newOrder, status: e.target.value })
+                  }
                 >
-                  <option value="Trống">Trống</option>
-                  <option value="Đang hoạt động">Đang hoạt động</option>
+                  <option value="New Order">New Order</option>
+                  <option value="Processed">Processed</option>
+                  <option value="Delivered">Delivered</option>
+                  <option value="Canceled">Canceled</option>
                 </select>
+              </div>
+              <div>
+                <label>Tổng tiền</label>
+                <input
+                  type="number"
+                  name="total_amount"
+                  value={newOrder.total_amount}
+                  onChange={(e) =>
+                    setNewOrder({
+                      ...newOrder,
+                      total_amount: parseInt(e.target.value),
+                    })
+                  }
+                />
               </div>
               <div className="modal-actions">
                 <button type="submit" className="btn save-btn">
@@ -143,18 +168,36 @@ const ChooseTable = ({ tables = [], onAddTable, onUpdate, onDelete }) => {
       {showEditForm && (
         <div className="modal-overlay">
           <div className="modal">
-            <h2>Cập nhật bàn</h2>
+            <h2>Cập nhật đơn hàng</h2>
             <form onSubmit={handleUpdateSubmit}>
               <div>
                 <label>Trạng thái</label>
                 <select
                   name="status"
-                  value={editTable.status || "Trống"}
-                  onChange={handleEditChange}
+                  value={editOrder.status || ""}
+                  onChange={(e) =>
+                    setEditOrder({ ...editOrder, status: e.target.value })
+                  }
                 >
-                  <option value="Trống">Trống</option>
-                  <option value="Đang hoạt động">Đang hoạt động</option>
+                  <option value="New Order">New Order</option>
+                  <option value="Processed">Processed</option>
+                  <option value="Delivered">Delivered</option>
+                  <option value="Canceled">Canceled</option>
                 </select>
+              </div>
+              <div>
+                <label>Tổng tiền</label>
+                <input
+                  type="number"
+                  name="total_amount"
+                  value={editOrder.total_amount || 0}
+                  onChange={(e) =>
+                    setEditOrder({
+                      ...editOrder,
+                      total_amount: parseInt(e.target.value),
+                    })
+                  }
+                />
               </div>
               <div className="modal-actions">
                 <button type="submit" className="btn save-btn">
@@ -176,4 +219,4 @@ const ChooseTable = ({ tables = [], onAddTable, onUpdate, onDelete }) => {
   );
 };
 
-export default ChooseTable;
+export default ChooseOrder;
