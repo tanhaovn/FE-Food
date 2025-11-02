@@ -10,7 +10,8 @@ import NewProductCategories from "./component/ProductCategories/NewProductCatego
 import NewProduct from "./component/Product/NewProduct.jsx";
 import NewChooseTable from "./component/Table/NewChooseTable.jsx";
 import ProductsPage from "./features/products/ProductsPage.jsx";
-import NewChooseOrder from "./component/OrderFood/NewChooseOrder.jsx";
+import NewChooseOrder from "./component/Order/NewChooseOrder.jsx";
+import NewChooseOrderItem from "./component/OrderItem/NewChooseOrderItem.jsx";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "/order-product",
         element: <NewChooseOrder />,
+      },
+      {
+        path: "/order-item",
+        element: <NewChooseOrderItem />,
       },
       // {
       //   path: "/dashboard",

@@ -1,39 +1,39 @@
 import React, { useState } from "react";
 
-const ChooseOrder = ({ orders = [], onAddOrder, onUpdate, onDelete }) => {
+const ChooseOrderItem = ({ items = [], onAddItem, onUpdateItem, onDeleteItem }) => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const [selected, setSelected] = useState(null);
-  const [newOrder, setNewOrder] = useState({
-    tableId: "",
-    status: "New Order",
-    total_amount: 0,
+  const [newItem, setNewItem] = useState({
+    order_id: "",
+    product_id: "",
+    quantity: 1,
+    subtotal: 0,
+    notes: ""
   });
-  const [editOrder, setEditOrder] = useState({});
+  const [editItem, setEditItem] = useState({});
 
-  // thêm
   const handleAddSubmit = (e) => {
     e.preventDefault();
-    onAddOrder(newOrder);
+    onAddItem(newItem);
     setShowAddForm(false);
-    setNewOrder({ tableId: "", status: "New Order", total_amount: 0 });
+    setNewItem({ order_id: "", product_id: "", quantity: 1, subtotal: 0, notes: "" });
   };
 
-  // cập nhật
   const handleUpdateSubmit = (e) => {
     e.preventDefault();
-    onUpdate(editOrder);
+    onUpdateItem(editItem);
     setShowEditForm(false);
   };
 
   return (
     <>
-      <h1 className="title">Danh sách đơn hàng</h1>
-      <p className="breadcrumb">Trang chủ / Quản lý đơn hàng</p>
+      <h1 className="title">Danh sách món trong đơn hàng</h1>
+      <p className="breadcrumb">Trang chủ / Quản lý món</p>
 
       <div className="actions">
         <button className="btn add-btn" onClick={() => setShowAddForm(true)}>
-          + Thêm đơn hàng
+          + Thêm món
         </button>
       </div>
 
@@ -41,21 +41,25 @@ const ChooseOrder = ({ orders = [], onAddOrder, onUpdate, onDelete }) => {
         <thead>
           <tr>
             <th>ID</th>
-            <th>Bàn</th>
-            <th>Trạng thái</th>
-            <th>Tổng tiền</th>
+            <th>ID Đơn hàng</th>
+            <th>ID Sản phẩm</th>
+            <th>Số lượng</th>
+            <th>Tổng phụ</th>
+            <th>Ghi chú</th>
             <th>Ngày tạo</th>
             <th>Thao tác</th>
           </tr>
         </thead>
         <tbody>
-          {orders.length > 0 ? (
-            orders.map((value) => (
+          {items.length > 0 ? (
+            items.map((value) => (
               <tr key={value.id}>
                 <td>{value.id}</td>
-                <td>{value.table?.id || "—"}</td>
-                <td>{value.status}</td>
-                <td>{value.total_amount}</td>
+                <td>{value.order?.id || value.order_id}</td>
+                <td>{value.product?.id || value.product_id}</td>
+                <td>{value.quantity}</td>
+                <td>{value.subtotal}</td>
+                <td>{value.notes}</td>
                 <td>{new Date(value.createdAt).toLocaleString()}</td>
                 <td>
                   <div className="dropdown">
@@ -71,7 +75,7 @@ const ChooseOrder = ({ orders = [], onAddOrder, onUpdate, onDelete }) => {
                       <div className="dropdown-menu">
                         <button
                           onClick={() => {
-                            setEditOrder(value);
+                            setEditItem(value);
                             setShowEditForm(true);
                             setSelected(null);
                           }}
@@ -80,7 +84,7 @@ const ChooseOrder = ({ orders = [], onAddOrder, onUpdate, onDelete }) => {
                         </button>
                         <button
                           onClick={() => {
-                            onDelete(value.id);
+                            onDeleteItem(value.id);
                             setSelected(null);
                           }}
                           className="delete-btn"
@@ -95,62 +99,74 @@ const ChooseOrder = ({ orders = [], onAddOrder, onUpdate, onDelete }) => {
             ))
           ) : (
             <tr>
-              <td colSpan="6">Chưa có đơn hàng nào</td>
+              <td colSpan="8">Chưa có món nào</td>
             </tr>
           )}
         </tbody>
       </table>
 
-      {/* Add Modal */}
+      {/* Add Form */}
       {showAddForm && (
         <div className="modal-overlay">
           <div className="modal">
-            <h2>Thêm đơn hàng</h2>
+            <h2>Thêm món mới</h2>
             <form onSubmit={handleAddSubmit}>
               <div>
-                <label>ID bàn</label>
+                <label>ID Đơn hàng</label>
                 <input
-                  name="tableId"
-                  value={newOrder.tableId}
+                  name="order_id"
+                  value={newItem.order_id}
                   onChange={(e) =>
-                    setNewOrder({ ...newOrder, tableId: e.target.value })
+                    setNewItem({ ...newItem, order_id: parseInt(e.target.value) })
                   }
                   required
                 />
               </div>
               <div>
-                <label>Trạng thái</label>
-                <select
-                  name="status"
-                  value={newOrder.status}
+                <label>ID Sản phẩm</label>
+                <input
+                  name="product_id"
+                  value={newItem.product_id}
                   onChange={(e) =>
-                    setNewOrder({ ...newOrder, status: e.target.value })
+                    setNewItem({ ...newItem, product_id: parseInt(e.target.value) })
                   }
-                >
-                  <option value="New Order">New Order</option>
-                  <option value="Processed">Processed</option>
-                  <option value="Delivered">Delivered</option>
-                  <option value="Canceled">Canceled</option>
-                </select>
+                  required
+                />
               </div>
               <div>
-                <label>Tổng tiền</label>
+                <label>Số lượng</label>
                 <input
                   type="number"
-                  name="total_amount"
-                  value={newOrder.total_amount}
+                  name="quantity"
+                  value={newItem.quantity}
                   onChange={(e) =>
-                    setNewOrder({
-                      ...newOrder,
-                      total_amount: parseInt(e.target.value),
-                    })
+                    setNewItem({ ...newItem, quantity: parseInt(e.target.value) })
+                  }
+                />
+              </div>
+              <div>
+                <label>Tổng phụ</label>
+                <input
+                  type="number"
+                  name="subtotal"
+                  value={newItem.subtotal}
+                  onChange={(e) =>
+                    setNewItem({ ...newItem, subtotal: parseInt(e.target.value) })
+                  }
+                />
+              </div>
+              <div>
+                <label>Ghi chú</label>
+                <input
+                  name="notes"
+                  value={newItem.notes}
+                  onChange={(e) =>
+                    setNewItem({ ...newItem, notes: e.target.value })
                   }
                 />
               </div>
               <div className="modal-actions">
-                <button type="submit" className="btn save-btn">
-                  Lưu
-                </button>
+                <button type="submit" className="btn save-btn">Lưu</button>
                 <button
                   type="button"
                   className="btn cancel-btn"
@@ -164,45 +180,46 @@ const ChooseOrder = ({ orders = [], onAddOrder, onUpdate, onDelete }) => {
         </div>
       )}
 
-      {/* Edit Modal */}
+      {/* Edit Form */}
       {showEditForm && (
         <div className="modal-overlay">
           <div className="modal">
-            <h2>Cập nhật đơn hàng</h2>
+            <h2>Cập nhật món</h2>
             <form onSubmit={handleUpdateSubmit}>
               <div>
-                <label>Trạng thái</label>
-                <select
-                  name="status"
-                  value={editOrder.status || ""}
-                  onChange={(e) =>
-                    setEditOrder({ ...editOrder, status: e.target.value })
-                  }
-                >
-                  <option value="New Order">New Order</option>
-                  <option value="Processed">Processed</option>
-                  <option value="Delivered">Delivered</option>
-                  <option value="Canceled">Canceled</option>
-                </select>
-              </div>
-              <div>
-                <label>Tổng tiền</label>
+                <label>Số lượng</label>
                 <input
                   type="number"
-                  name="total_amount"
-                  value={editOrder.total_amount || 0}
+                  name="quantity"
+                  value={editItem.quantity || 0}
                   onChange={(e) =>
-                    setEditOrder({
-                      ...editOrder,
-                      total_amount: parseInt(e.target.value),
-                    })
+                    setEditItem({ ...editItem, quantity: parseInt(e.target.value) })
+                  }
+                />
+              </div>
+              <div>
+                <label>Tổng phụ</label>
+                <input
+                  type="number"
+                  name="subtotal"
+                  value={editItem.subtotal || 0}
+                  onChange={(e) =>
+                    setEditItem({ ...editItem, subtotal: parseInt(e.target.value) })
+                  }
+                />
+              </div>
+              <div>
+                <label>Ghi chú</label>
+                <input
+                  name="notes"
+                  value={editItem.notes || ""}
+                  onChange={(e) =>
+                    setEditItem({ ...editItem, notes: e.target.value })
                   }
                 />
               </div>
               <div className="modal-actions">
-                <button type="submit" className="btn save-btn">
-                  Lưu
-                </button>
+                <button type="submit" className="btn save-btn">Lưu</button>
                 <button
                   type="button"
                   className="btn cancel-btn"
@@ -219,4 +236,4 @@ const ChooseOrder = ({ orders = [], onAddOrder, onUpdate, onDelete }) => {
   );
 };
 
-export default ChooseOrder;
+export default ChooseOrderItem;

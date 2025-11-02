@@ -29,16 +29,15 @@ const NewChooseTable = () => {
 
   // Cập nhật
   const updateTable = (updatedTable) => {
-    axios
-      .patch(`${API_URL}/${updatedTable.id}`, updatedTable)
-      .then((res) => {
-        setTables(
-          tables.map((t) =>
-            t.id === updatedTable.id ? res.data.data : t
-          )
-        );
-      })
-      .catch((err) => console.error(err));
+   axios
+  .patch(`${API_URL}?id=${updatedTable.id}`, updatedTable)
+  .then((res) => {
+    const updated = res.data.data || res.data;
+    setTables(tables.map((t) => (t.id === updatedTable.id ? updated : t)));
+  })
+  .catch((err) => console.error(err));
+
+
   };
 
   // Thêm

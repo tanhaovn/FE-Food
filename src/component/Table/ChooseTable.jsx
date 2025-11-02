@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
 const ChooseTable = ({ tables = [], onAddTable, onUpdate, onDelete }) => {
-  // Thêm bàn
+  // Add table
   const [showAddForm, setShowAddForm] = useState(false);
-  const [newTable, setNewTable] = useState({ status: "Trống" });
+  const [newTable, setNewTable] = useState({ status: "Empty" });
 
   const handleNewChange = (e) => {
     setNewTable({ ...newTable, [e.target.name]: e.target.value });
@@ -13,16 +13,16 @@ const ChooseTable = ({ tables = [], onAddTable, onUpdate, onDelete }) => {
     e.preventDefault();
     onAddTable(newTable);
     setShowAddForm(false);
-    setNewTable({ status: "Trống" });
+    setNewTable({ status: "Empty" });
   };
 
-  // Cập nhật bàn
+  // Update table
   const [selected, setSelected] = useState(null);
   const [showEditForm, setShowEditForm] = useState(false);
   const [editTable, setEditTable] = useState({});
 
   const handleEditClick = (table) => {
-    setEditTable(table);
+    setEditTable({ ...table });
     setShowEditForm(true);
     setSelected(null);
   };
@@ -40,12 +40,12 @@ const ChooseTable = ({ tables = [], onAddTable, onUpdate, onDelete }) => {
 
   return (
     <>
-      <h1 className="title">Danh sách bàn</h1>
-      <p className="breadcrumb">Trang chủ / Quản lý bàn</p>
+      <h1 className="title">Table List</h1>
+      <p className="breadcrumb">Home / Table Management</p>
 
       <div className="actions">
         <button className="btn add-btn" onClick={() => setShowAddForm(true)}>
-          + Thêm bàn
+          + Add Table
         </button>
       </div>
 
@@ -53,10 +53,10 @@ const ChooseTable = ({ tables = [], onAddTable, onUpdate, onDelete }) => {
         <thead>
           <tr>
             <th>ID</th>
-            <th>Trạng thái</th>
-            <th>Ngày tạo</th>
-            <th>Ngày cập nhật</th>
-            <th>Thao tác</th>
+            <th>Status</th>
+            <th>Created At</th>
+            <th>Updated At</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -80,7 +80,7 @@ const ChooseTable = ({ tables = [], onAddTable, onUpdate, onDelete }) => {
                     {selected === value.id && (
                       <div className="dropdown-menu">
                         <button onClick={() => handleEditClick(value)}>
-                          Sửa
+                          Update
                         </button>
                         <button
                           onClick={() => {
@@ -89,7 +89,7 @@ const ChooseTable = ({ tables = [], onAddTable, onUpdate, onDelete }) => {
                           }}
                           className="delete-btn"
                         >
-                          Xóa
+                          Delete
                         </button>
                       </div>
                     )}
@@ -99,7 +99,7 @@ const ChooseTable = ({ tables = [], onAddTable, onUpdate, onDelete }) => {
             ))
           ) : (
             <tr>
-              <td colSpan="5">Chưa có bàn nào</td>
+              <td colSpan="5">No tables available</td>
             </tr>
           )}
         </tbody>
@@ -109,29 +109,29 @@ const ChooseTable = ({ tables = [], onAddTable, onUpdate, onDelete }) => {
       {showAddForm && (
         <div className="modal-overlay">
           <div className="modal">
-            <h2>Thêm bàn mới</h2>
+            <h2>Add New Table</h2>
             <form onSubmit={handleAddSubmit}>
               <div>
-                <label>Trạng thái</label>
+                <label>Status</label>
                 <select
                   name="status"
                   value={newTable.status}
                   onChange={handleNewChange}
                 >
-                  <option value="Trống">Trống</option>
-                  <option value="Đang hoạt động">Đang hoạt động</option>
+                  <option value="Empty">Empty</option>
+                  <option value="Active">Active</option>
                 </select>
               </div>
               <div className="modal-actions">
                 <button type="submit" className="btn save-btn">
-                  Lưu
+                  Save
                 </button>
                 <button
                   type="button"
                   className="btn cancel-btn"
                   onClick={() => setShowAddForm(false)}
                 >
-                  Hủy
+                  Cancel
                 </button>
               </div>
             </form>
@@ -143,29 +143,29 @@ const ChooseTable = ({ tables = [], onAddTable, onUpdate, onDelete }) => {
       {showEditForm && (
         <div className="modal-overlay">
           <div className="modal">
-            <h2>Cập nhật bàn</h2>
+            <h2>Update Table</h2>
             <form onSubmit={handleUpdateSubmit}>
               <div>
-                <label>Trạng thái</label>
+                <label>Status</label>
                 <select
                   name="status"
-                  value={editTable.status || "Trống"}
+                  value={editTable.status || "Empty"}
                   onChange={handleEditChange}
                 >
-                  <option value="Trống">Trống</option>
-                  <option value="Đang hoạt động">Đang hoạt động</option>
+                  <option value="Empty">Empty</option>
+                  <option value="Active">Active</option>
                 </select>
               </div>
               <div className="modal-actions">
                 <button type="submit" className="btn save-btn">
-                  Lưu
+                  Save
                 </button>
                 <button
                   type="button"
                   className="btn cancel-btn"
                   onClick={() => setShowEditForm(false)}
                 >
-                  Hủy
+                  Cancel
                 </button>
               </div>
             </form>

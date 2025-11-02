@@ -100,8 +100,7 @@ const Product = ({
 
   return (
     <>
-      <br />
-      <h1 className="title">ProductList</h1>
+      <h1 className="title">Product List</h1>
       <p className="breadcrumb">Home / Products / Category List</p>
       <div className="actions">
         <div className="search-box">
@@ -121,7 +120,6 @@ const Product = ({
             <th>Description</th>
             <th>Category</th>
             <th>Price</th>
-            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -143,9 +141,6 @@ const Product = ({
                 <td>{value.description}</td>
                 <td>{value.category?.name || "No Category"}</td>
                 <td>{value.price} USD</td>
-                <td>
-                  <ToggleButton product={value} onUpdate={onUpdate} />
-                </td>
                 <td>
                   <div className="dropdown">
                     <button

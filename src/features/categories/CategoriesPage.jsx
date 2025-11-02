@@ -48,7 +48,6 @@ const CategoriesPage = () => {
 
   return (
     <>
-      <br />
       <div className="container">
         <h1 className="title">Product Categories</h1>
         <p className="breadcrumb">Home / Products / Category List</p>
