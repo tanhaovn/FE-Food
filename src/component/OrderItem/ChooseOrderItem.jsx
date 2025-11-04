@@ -1,25 +1,41 @@
 import React, { useState } from "react";
 
-const ChooseOrderItem = ({ items = [], onAddItem, onUpdateItem, onDeleteItem }) => {
+const ChooseOrderItem = ({
+  items = [],
+  products = [],
+  onAddItem,
+  onUpdateItem,
+  onDeleteItem,
+}) => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const [selected, setSelected] = useState(null);
+
   const [newItem, setNewItem] = useState({
     order_id: "",
     product_id: "",
     quantity: 1,
     subtotal: 0,
-    notes: ""
+    notes: "",
   });
+
   const [editItem, setEditItem] = useState({});
 
+  // 🔹 Submit thêm mới
   const handleAddSubmit = (e) => {
     e.preventDefault();
     onAddItem(newItem);
     setShowAddForm(false);
-    setNewItem({ order_id: "", product_id: "", quantity: 1, subtotal: 0, notes: "" });
+    setNewItem({
+      order_id: "",
+      product_id: "",
+      quantity: 1,
+      subtotal: 0,
+      notes: "",
+    });
   };
 
+  // 🔹 Submit cập nhật
   const handleUpdateSubmit = (e) => {
     e.preventDefault();
     onUpdateItem(editItem);
@@ -41,8 +57,8 @@ const ChooseOrderItem = ({ items = [], onAddItem, onUpdateItem, onDeleteItem }) 
         <thead>
           <tr>
             <th>ID</th>
-            <th>ID Đơn hàng</th>
-            <th>ID Sản phẩm</th>
+            <th>Đơn hàng</th>
+            <th>Sản phẩm</th>
             <th>Số lượng</th>
             <th>Tổng phụ</th>
             <th>Ghi chú</th>
@@ -56,7 +72,10 @@ const ChooseOrderItem = ({ items = [], onAddItem, onUpdateItem, onDeleteItem }) 
               <tr key={value.id}>
                 <td>{value.id}</td>
                 <td>{value.order?.id || value.order_id}</td>
-                <td>{value.product?.id || value.product_id}</td>
+                <td>
+                  {value.product?.name || value.product_id}{" "}
+                  {value.product?.price ? `($${value.product.price})` : ""}
+                </td>
                 <td>{value.quantity}</td>
                 <td>{value.subtotal}</td>
                 <td>{value.notes}</td>
@@ -105,7 +124,7 @@ const ChooseOrderItem = ({ items = [], onAddItem, onUpdateItem, onDeleteItem }) 
         </tbody>
       </table>
 
-      {/* Add Form */}
+      {/* Modal thêm */}
       {showAddForm && (
         <div className="modal-overlay">
           <div className="modal">
@@ -117,44 +136,65 @@ const ChooseOrderItem = ({ items = [], onAddItem, onUpdateItem, onDeleteItem }) 
                   name="order_id"
                   value={newItem.order_id}
                   onChange={(e) =>
-                    setNewItem({ ...newItem, order_id: parseInt(e.target.value) })
+                    setNewItem({
+                      ...newItem,
+                      order_id: parseInt(e.target.value),
+                    })
                   }
                   required
                 />
               </div>
+
               <div>
-                <label>ID Sản phẩm</label>
-                <input
+                <label>Sản phẩm</label>
+                <select
                   name="product_id"
                   value={newItem.product_id}
-                  onChange={(e) =>
-                    setNewItem({ ...newItem, product_id: parseInt(e.target.value) })
-                  }
+                  onChange={(e) => {
+                    const id = parseInt(e.target.value);
+                    const product = products.find((p) => p.id === id);
+                    setNewItem({
+                      ...newItem,
+                      product_id: id,
+                      subtotal: product ? product.price * newItem.quantity : 0,
+                    });
+                  }}
                   required
-                />
+                >
+                  <option value="">-- Chọn sản phẩm --</option>
+                  {products.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.name} - ${p.price}
+                    </option>
+                  ))}
+                </select>
               </div>
+
               <div>
                 <label>Số lượng</label>
                 <input
                   type="number"
-                  name="quantity"
+                  min="1"
                   value={newItem.quantity}
-                  onChange={(e) =>
-                    setNewItem({ ...newItem, quantity: parseInt(e.target.value) })
-                  }
+                  onChange={(e) => {
+                    const qty = parseInt(e.target.value);
+                    const product = products.find(
+                      (p) => p.id === newItem.product_id
+                    );
+                    setNewItem({
+                      ...newItem,
+                      quantity: qty,
+                      subtotal: product ? product.price * qty : 0,
+                    });
+                  }}
                 />
               </div>
+
               <div>
-                <label>Tổng phụ</label>
-                <input
-                  type="number"
-                  name="subtotal"
-                  value={newItem.subtotal}
-                  onChange={(e) =>
-                    setNewItem({ ...newItem, subtotal: parseInt(e.target.value) })
-                  }
-                />
+                <label>Tổng phụ ($)</label>
+                <input type="number" value={newItem.subtotal} readOnly />
               </div>
+
               <div>
                 <label>Ghi chú</label>
                 <input
@@ -165,8 +205,11 @@ const ChooseOrderItem = ({ items = [], onAddItem, onUpdateItem, onDeleteItem }) 
                   }
                 />
               </div>
+
               <div className="modal-actions">
-                <button type="submit" className="btn save-btn">Lưu</button>
+                <button type="submit" className="btn save-btn">
+                  Lưu
+                </button>
                 <button
                   type="button"
                   className="btn cancel-btn"
@@ -180,46 +223,65 @@ const ChooseOrderItem = ({ items = [], onAddItem, onUpdateItem, onDeleteItem }) 
         </div>
       )}
 
-      {/* Edit Form */}
+      {/* Modal cập nhật */}
       {showEditForm && (
         <div className="modal-overlay">
           <div className="modal">
             <h2>Cập nhật món</h2>
             <form onSubmit={handleUpdateSubmit}>
               <div>
+                <label>Sản phẩm</label>
+                <input
+                  type="text"
+                  value={
+                    editItem.product?.name ||
+                    `ID: ${editItem.product_id || ""}`
+                  }
+                  disabled
+                />
+              </div>
+
+              <div>
                 <label>Số lượng</label>
                 <input
                   type="number"
-                  name="quantity"
-                  value={editItem.quantity || 0}
-                  onChange={(e) =>
-                    setEditItem({ ...editItem, quantity: parseInt(e.target.value) })
-                  }
+                  min="1"
+                  value={editItem.quantity || 1}
+                  onChange={(e) => {
+                    const qty = parseInt(e.target.value);
+                    const product = products.find(
+                      (p) =>
+                        p.id ===
+                        (editItem.product?.id || editItem.product_id)
+                    );
+                    setEditItem({
+                      ...editItem,
+                      quantity: qty,
+                      subtotal: product ? product.price * qty : 0,
+                    });
+                  }}
                 />
               </div>
+
               <div>
-                <label>Tổng phụ</label>
-                <input
-                  type="number"
-                  name="subtotal"
-                  value={editItem.subtotal || 0}
-                  onChange={(e) =>
-                    setEditItem({ ...editItem, subtotal: parseInt(e.target.value) })
-                  }
-                />
+                <label>Tổng phụ ($)</label>
+                <input type="number" value={editItem.subtotal || 0} readOnly />
               </div>
+
               <div>
                 <label>Ghi chú</label>
                 <input
-                  name="notes"
                   value={editItem.notes || ""}
                   onChange={(e) =>
                     setEditItem({ ...editItem, notes: e.target.value })
                   }
                 />
               </div>
+
               <div className="modal-actions">
-                <button type="submit" className="btn save-btn">Lưu</button>
+                <button type="submit" className="btn save-btn">
+                  Lưu
+                </button>
                 <button
                   type="button"
                   className="btn cancel-btn"

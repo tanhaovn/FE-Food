@@ -12,32 +12,30 @@ const NewChooseTable = () => {
     axios
       .get(API_URL)
       .then((res) => {
-        setTables(res.data.data); 
+        setTables(res.data.data);
       })
       .catch((err) => console.error(err));
   }, []);
 
-  // Xóa
-  const deleteTable = (id) => {
-    axios
-      .delete(`${API_URL}?id=${id}`)
-      .then(() => {
-        setTables(tables.filter((t) => t.id !== id));
-      })
-      .catch((err) => console.error(err));
-  };
+// Xóa
+const deleteTable = (id) => {
+  axios
+    .delete(`${API_URL}?id=${id}`)
+    .then(() => {
+      setTables(tables.filter((t) => t.id !== id));
+    })
+    .catch((err) => console.error(err));
+};
 
   // Cập nhật
   const updateTable = (updatedTable) => {
-   axios
-  .patch(`${API_URL}?id=${updatedTable.id}`, updatedTable)
-  .then((res) => {
-    const updated = res.data.data || res.data;
-    setTables(tables.map((t) => (t.id === updatedTable.id ? updated : t)));
-  })
-  .catch((err) => console.error(err));
-
-
+    axios
+      .put(`${API_URL}/${updatedTable.id}`, updatedTable)
+      .then((res) => {
+        const updated = res.data.data || res.data;
+        setTables(tables.map((t) => (t.id === updatedTable.id ? updated : t)));
+      })
+      .catch((err) => console.error(err));
   };
 
   // Thêm

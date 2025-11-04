@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 const ToggleButton = ({ product, onUpdate }) => {
   const [isOn, setIsOn] = useState(product.status === 1);
 
@@ -13,9 +14,7 @@ const ToggleButton = ({ product, onUpdate }) => {
       body: formData,
     })
       .then((res) => res.json())
-      .then((data) => {
-        onUpdate(data);
-      })
+      .then((data) => onUpdate(data))
       .catch((err) => console.error(err));
   };
 
@@ -98,6 +97,13 @@ const Product = ({
     setShowEditForm(false);
   };
 
+  // Chi tiết sản phẩm
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const handleImageClick = (product) => {
+    setSelectedProduct(product);
+  };
+  const closeDetail = () => setSelectedProduct(null);
+
   return (
     <>
       <h1 className="title">Product List</h1>
@@ -111,13 +117,14 @@ const Product = ({
           + Add New Product
         </button>
       </div>
+
       <table className="product-table">
         <thead>
           <tr>
             <th>No</th>
             <th>Product</th>
             <th></th>
-            <th>Description</th>
+            <th>Ingredient</th>
             <th>Category</th>
             <th>Price</th>
             <th>Action</th>
@@ -134,6 +141,9 @@ const Product = ({
                       src={`http://localhost:8080/images/${value.image}`}
                       alt={value.name}
                       width="60"
+                      className="product-img"
+                      onClick={() => handleImageClick(value)}
+                      style={{ cursor: "pointer", borderRadius: "8px" }}
                     />
                   )}
                 </td>
@@ -178,7 +188,7 @@ const Product = ({
         </tbody>
       </table>
 
-      {/* Add Product */}
+      {/* Modal Thêm */}
       {showAddForm && (
         <div className="modal-overlay">
           <div className="modal">
@@ -194,7 +204,7 @@ const Product = ({
               />
               <textarea
                 name="description"
-                placeholder="Description"
+                placeholder="Ingredient"
                 value={newProduct.description}
                 onChange={handleNewChange}
               />
@@ -243,7 +253,7 @@ const Product = ({
         </div>
       )}
 
-      {/* Update Product */}
+      {/* Modal Cập nhật */}
       {showEditForm && (
         <div className="modal-overlay">
           <div className="modal">
@@ -304,6 +314,37 @@ const Product = ({
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Chi tiết sản phẩm */}
+      {selectedProduct && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h2>{selectedProduct.name}</h2>
+            <img
+              src={`http://localhost:8080/images/${selectedProduct.image}`}
+              alt={selectedProduct.name}
+              width="200"
+              style={{ borderRadius: "10px", marginBottom: "10px" }}
+            />
+            <p>
+              <strong>Ingredient:</strong>
+              <br />
+              {selectedProduct.description?.split(",").map((item, i) => (
+                <div key={i}>{item.trim()}</div>
+              ))}
+            </p>
+
+            <p>
+              <strong>Category:</strong>{" "}
+              {selectedProduct.category?.name || "No Category"}
+            </p>
+            <br />
+            <button className="btn cancel-btn" onClick={closeDetail}>
+              Close
+            </button>
           </div>
         </div>
       )}
