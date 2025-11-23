@@ -4,19 +4,26 @@ const ChooseOrder = ({ orders = [], onAddOrder, onUpdate, onDelete }) => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const [selected, setSelected] = useState(null);
+
   const [newOrder, setNewOrder] = useState({
     table_id: "",
     status: "Pending",
     total_amount: 0,
     items: [],
   });
+
   const [editOrder, setEditOrder] = useState({});
 
   // thêm
   const handleAddSubmit = (e) => {
     e.preventDefault();
+    if (!newOrder.table_id) {
+      alert("Vui lòng nhập ID bàn");
+      return;
+    }
     onAddOrder(newOrder);
     setShowAddForm(false);
+
     setNewOrder({
       table_id: "",
       status: "Pending",
@@ -34,19 +41,19 @@ const ChooseOrder = ({ orders = [], onAddOrder, onUpdate, onDelete }) => {
 
   return (
     <>
-      <h1 className="title">List of orders</h1>
+      <h1 className="title">Orders</h1>
       <p className="breadcrumb">Home / Order Management</p>
 
       <div className="actions">
         <div className="search-box">
-          <input type="text" placeholder="Search" />
+          <input type="text" placeholder="Search..." />
         </div>
         <button className="btn filter-btn">Filter</button>
         <button className="btn add-btn" onClick={() => setShowAddForm(true)}>
-          + Add order
+          + Add Order
         </button>
       </div>
-      <div className="actions"></div>
+
       <table className="product-table">
         <thead>
           <tr>
@@ -63,10 +70,14 @@ const ChooseOrder = ({ orders = [], onAddOrder, onUpdate, onDelete }) => {
             orders.map((value) => (
               <tr key={value.id}>
                 <td>{value.id}</td>
-                <td>{value.table?.id || "—"}</td>
+                <td>{value.table?.id || value.table_id}</td>
                 <td>{value.status}</td>
                 <td>{value.total_amount}</td>
-                <td>{new Date(value.createdAt).toLocaleString()}</td>
+                <td>
+                  {value.createdAt
+                    ? new Date(value.createdAt).toLocaleString()
+                    : "—"}
+                </td>
                 <td>
                   <div className="dropdown">
                     <button
@@ -77,6 +88,7 @@ const ChooseOrder = ({ orders = [], onAddOrder, onUpdate, onDelete }) => {
                     >
                       ⋮
                     </button>
+
                     {selected === value.id && (
                       <div className="dropdown-menu">
                         <button
@@ -105,13 +117,13 @@ const ChooseOrder = ({ orders = [], onAddOrder, onUpdate, onDelete }) => {
             ))
           ) : (
             <tr>
-              <td colSpan="6">Chưa có đơn hàng nào</td>
+              <td colSpan="6">No orders yet</td>
             </tr>
           )}
         </tbody>
       </table>
 
-      {/* Add Modal */}
+      {/* --- Add Modal --- */}
       {showAddForm && (
         <div className="modal-overlay">
           <div className="modal">
@@ -120,7 +132,7 @@ const ChooseOrder = ({ orders = [], onAddOrder, onUpdate, onDelete }) => {
               <div>
                 <label>ID bàn</label>
                 <input
-                  name="table_id"
+                  type="number"
                   value={newOrder.table_id}
                   onChange={(e) =>
                     setNewOrder({
@@ -131,10 +143,10 @@ const ChooseOrder = ({ orders = [], onAddOrder, onUpdate, onDelete }) => {
                   required
                 />
               </div>
+
               <div>
-                <label>Trạng thái</label>
+                <label>Status</label>
                 <select
-                  name="status"
                   value={newOrder.status}
                   onChange={(e) =>
                     setNewOrder({ ...newOrder, status: e.target.value })
@@ -146,30 +158,31 @@ const ChooseOrder = ({ orders = [], onAddOrder, onUpdate, onDelete }) => {
                   <option value="Canceled">Canceled</option>
                 </select>
               </div>
+
               <div>
-                <label>Tổng tiền</label>
+                <label>Total amount</label>
                 <input
                   type="number"
-                  name="total_amount"
                   value={newOrder.total_amount}
                   onChange={(e) =>
                     setNewOrder({
                       ...newOrder,
-                      total_amount: parseInt(e.target.value),
+                      total_amount: parseFloat(e.target.value),
                     })
                   }
                 />
               </div>
+
               <div className="modal-actions">
                 <button type="submit" className="btn save-btn">
-                  Lưu
+                  Save
                 </button>
                 <button
                   type="button"
                   className="btn cancel-btn"
                   onClick={() => setShowAddForm(false)}
                 >
-                  Hủy
+                  Cancel
                 </button>
               </div>
             </form>
@@ -177,16 +190,15 @@ const ChooseOrder = ({ orders = [], onAddOrder, onUpdate, onDelete }) => {
         </div>
       )}
 
-      {/* Edit Modal */}
+      {/* --- Edit Modal --- */}
       {showEditForm && (
         <div className="modal-overlay">
           <div className="modal">
-            <h2>Cập nhật đơn hàng</h2>
+            <h2>Update orders</h2>
             <form onSubmit={handleUpdateSubmit}>
               <div>
-                <label>Trạng thái</label>
+                <label>Status</label>
                 <select
-                  name="status"
                   value={editOrder.status || ""}
                   onChange={(e) =>
                     setEditOrder({ ...editOrder, status: e.target.value })
@@ -198,30 +210,31 @@ const ChooseOrder = ({ orders = [], onAddOrder, onUpdate, onDelete }) => {
                   <option value="Canceled">Canceled</option>
                 </select>
               </div>
+
               <div>
-                <label>Tổng tiền</label>
+                <label>Total amount</label>
                 <input
                   type="number"
-                  name="total_amount"
                   value={editOrder.total_amount || 0}
                   onChange={(e) =>
                     setEditOrder({
                       ...editOrder,
-                      total_amount: parseInt(e.target.value),
+                      total_amount: parseFloat(e.target.value),
                     })
                   }
                 />
               </div>
+
               <div className="modal-actions">
                 <button type="submit" className="btn save-btn">
-                  Lưu
+                  Save
                 </button>
                 <button
                   type="button"
                   className="btn cancel-btn"
                   onClick={() => setShowEditForm(false)}
                 >
-                  Hủy
+                  Cancel
                 </button>
               </div>
             </form>

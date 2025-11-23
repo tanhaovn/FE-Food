@@ -37,12 +37,12 @@ const ProductCategories = ({ onAddProduct, products, onDelete, onUpdate }) => {
     onUpdate(editProduct);
     setShowEditForm(false);
   };
-  
+
   return (
     <>
       <br />
-      <h1 className="title">Product Categories</h1>
-      <p className="breadcrumb">Home / Products / Category List</p>
+      <h1 className="title">Categories</h1>
+      <p className="breadcrumb">Home / Category List</p>
       <div className="actions">
         <div className="search-box">
           <input type="text" placeholder="Search" />

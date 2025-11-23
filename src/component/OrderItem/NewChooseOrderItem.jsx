@@ -1,89 +1,80 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ChooseOrderItem from "./ChooseOrderItem";
-import "./OrderFood.css";
 
-const API_URL = "http://localhost:8080/api/orderItems";
-const API_PRODUCTS = "http://localhost:8080/api/products";
+const API_URL_ITEMS = "http://localhost:8080/api/orderItems";
+const API_URL_PRODUCTS = "http://localhost:8080/api/products";
+const API_URL_ORDERS = "http://localhost:8080/api/order";
 
 const NewChooseOrderItem = () => {
-  const [items, setItems] = useState([]);
+  const [orderItems, setOrderItems] = useState([]);
   const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // 🔹 Load OrderItems
   useEffect(() => {
-    axios
-      .get(API_URL)
-      .then((res) => setItems(res.data.data || res.data))
-      .catch((err) => console.error("Lỗi khi tải danh sách món:", err));
+    const fetchAll = async () => {
+      try {
+        const [itemsRes, prodRes, orderRes] = await Promise.all([
+          axios.get(API_URL_ITEMS),
+          axios.get(API_URL_PRODUCTS),
+          axios.get(API_URL_ORDERS),
+        ]);
+        setOrderItems(itemsRes.data.data);
+        setProducts(prodRes.data.data);
+        setOrders(orderRes.data.data);
+      } catch (err) {
+        console.error("Error loading data", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAll();
   }, []);
 
-  // 🔹 Load Products
-  useEffect(() => {
-    axios
-      .get(API_PRODUCTS)
-      .then((res) => setProducts(res.data.data || res.data))
-      .catch((err) => console.error("Lỗi khi tải sản phẩm:", err));
-  }, []);
-
-  // 🔹 Thêm món mới
-  const addItem = (newItem) => {
-    const payload = {
-      order: { id: newItem.order_id },
-      product: { id: newItem.product_id },
-      quantity: newItem.quantity,
-      subtotal: newItem.subtotal,
-      notes: newItem.notes,
-    };
-
-    axios
-      .post(API_URL, payload)
-      .then((res) => setItems([...items, res.data.data || res.data]))
-      .catch((err) => console.error("Lỗi khi thêm món:", err));
+  const addOrderItem = async (item) => {
+    try {
+      const res = await axios.post(API_URL_ITEMS, item);
+      setOrderItems([...orderItems, res.data.data]);
+    } catch (err) {
+      console.error("Error adding OrderItem", err);
+    }
   };
 
-  // 🔹 Cập nhật món
-  const updateItem = (updatedItem) => {
-    const payload = {
-      order: updatedItem.order
-        ? { id: updatedItem.order.id }
-        : { id: updatedItem.order_id },
-      product: updatedItem.product
-        ? { id: updatedItem.product.id }
-        : { id: updatedItem.product_id },
-      quantity: updatedItem.quantity,
-      subtotal: updatedItem.subtotal,
-      notes: updatedItem.notes,
-    };
-
-    axios
-      .patch(`${API_URL}/${updatedItem.id}`, payload)
-      .then((res) =>
-        setItems(
-          items.map((i) =>
-            i.id === updatedItem.id ? res.data.data || res.data : i
-          )
-        )
-      )
-      .catch((err) => console.error("Lỗi khi cập nhật món:", err));
+  const updateOrderItem = async (updatedItem) => {
+    try {
+      const res = await axios.put(
+        `${API_URL_ITEMS}/${updatedItem.id}`,
+        updatedItem
+      );
+      setOrderItems(
+        orderItems.map((i) => (i.id === updatedItem.id ? res.data.data : i))
+      );
+    } catch (err) {
+      console.error("Error while updating OrderItem", err);
+    }
   };
 
-  // 🔹 Xóa món
-  const deleteItem = (id) => {
-    axios
-      .delete(`${API_URL}/${id}`)
-      .then(() => setItems(items.filter((i) => i.id !== id)))
-      .catch((err) => console.error("Lỗi khi xóa món:", err));
+  const deleteOrderItem = async (id) => {
+    try {
+      await axios.delete(`${API_URL_ITEMS}/${id}`);
+      setOrderItems(orderItems.filter((i) => i.id !== id));
+    } catch (err) {
+      console.error("Error while deleting OrderItem", err);
+    }
   };
+
+  if (loading) return <p>Loading data...</p>;
 
   return (
     <div className="container">
       <ChooseOrderItem
-        items={items}
+        items={orderItems}
         products={products}
-        onAddItem={addItem}
-        onUpdateItem={updateItem}
-        onDeleteItem={deleteItem}
+        orders={orders}
+        onAdd={addOrderItem}
+        onUpdate={updateOrderItem}
+        onDelete={deleteOrderItem}
       />
     </div>
   );

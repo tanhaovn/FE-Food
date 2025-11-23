@@ -106,8 +106,8 @@ const Product = ({
 
   return (
     <>
-      <h1 className="title">Product List</h1>
-      <p className="breadcrumb">Home / Products / Category List</p>
+      <h1 className="title">Product</h1>
+      <p className="breadcrumb">Home / Products List</p>
       <div className="actions">
         <div className="search-box">
           <input type="text" placeholder="Search" />

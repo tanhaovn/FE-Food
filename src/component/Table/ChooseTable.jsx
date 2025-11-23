@@ -40,10 +40,14 @@ const ChooseTable = ({ tables = [], onAddTable, onUpdate, onDelete }) => {
 
   return (
     <>
-      <h1 className="title">Table List</h1>
+      <h1 className="title">Table</h1>
       <p className="breadcrumb">Home / Table Management</p>
 
       <div className="actions">
+        <div className="search-box">
+          <input type="text" placeholder="Search" />
+        </div>
+        <button className="btn filter-btn">Filter</button>
         <button className="btn add-btn" onClick={() => setShowAddForm(true)}>
           + Add Table
         </button>

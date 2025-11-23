@@ -526,14 +526,12 @@ body {
     padding: 12px;
   }
 
-  /* Table responsive - scroll horizontal */
   .product-table {
     display: block;
     overflow-x: auto;
   }
 }
 
-/* Animations supplémentaires */
 .product-table tbody tr {
   animation: fadeInRow 0.5s ease-out backwards;
 }
@@ -555,7 +553,7 @@ body {
   }
 }
 
-/* État vide */
+
 .product-table tbody td[colspan] {
   text-align: center;
   padding: 48px 16px;
@@ -571,7 +569,7 @@ body {
   opacity: 0.5;
 }
 
-/* Dark Mode Support */
+
 @media (prefers-color-scheme: dark) {
   :root {
     --bg-primary: #1e293b;

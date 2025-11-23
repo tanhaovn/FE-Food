@@ -24,31 +24,31 @@ const router = createBrowserRouter([
         element: <NewProductCategories />,
       },
       {
-        path: "/product-categorie",
+        path: "product-categorie",
         element: <NewProductCategories />,
       },
       {
-        path: "/product-list",
+        path: "product-list",
         element: <NewProduct />,
       },
       {
-        path: "/table",
+        path: "table",
         element: <NewChooseTable />,
       },
       {
-        path: "/order-product",
+        path: "order-product",
         element: <NewChooseOrder />,
       },
       {
-        path: "/order-item",
+        path: "order-item",
         element: <NewChooseOrderItem />,
       },
       // {
-      //   path: "/dashboard",
+      //   path: "dashboard",
       //   element: <ProductsPage />,
       // },
       {
-        path: "/setting",
+        path: "setting",
         element: <div>Setting</div>,
       },
     ],
@@ -59,6 +59,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
 ]);
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <RouterProvider router={router} />
